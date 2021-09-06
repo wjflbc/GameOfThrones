@@ -4,6 +4,10 @@ import gotService from '../../services/gotService';
 import Spinner from "../spiner/spiner";
 import ErrorMessage from "../error";
 
+
+
+
+
 export default class RandomChar extends Component {
 
     constructor() {
@@ -15,7 +19,7 @@ export default class RandomChar extends Component {
     state = {
         char: {},
         loading: true,
-        error: false
+        error: false,
     }
 
     onCharLoaded = (char) => {
@@ -40,25 +44,33 @@ export default class RandomChar extends Component {
     }
 
     render() {
+        let classNames = "random-block rounded";
 
         const {char, loading, error} = this.state;
+        const {toggl} = this.props
 
+        const tog = toggl ? classNames +=' hide' : classNames +=' show';
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinner = loading ? <Spinner/> : null;
         const content = !(loading || error) ? <View char={char}/> : null ;
 
         return (
-            <div className="random-block rounded">
+            <div className={classNames} >
+                {tog}
                 {errorMessage}
                 {spinner}
                 {content}
             </div>
+
         );
+
+
     }
 }
 
 const View = ({char}) => {
     const {name, gender, born, died, culture} = char;
+
     return (
         <>
             <h4>Random Character: {name}</h4>
@@ -83,3 +95,7 @@ const View = ({char}) => {
         </>
     )
 }
+
+
+
+
