@@ -12,7 +12,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           toggl: false
+           toggl: true
         }
 
         this.onToggleChar = this.onToggleChar.bind(this);
@@ -21,13 +21,15 @@ export default class App extends Component {
 
 
     onToggleChar () {
-        this.setState( {
-            toggl: true
-        })
+        this.setState(({toggl}) =>({
+            toggl: !toggl
+        }))
+
     }
 
+
     render() {
-        const {toggl} = this.state;
+        const tog = this.state.toggl ? <RandomChar/> : null;
 
         return (
             <>
@@ -37,13 +39,11 @@ export default class App extends Component {
                 <Container>
                     <Row>
                         <Col lg={{size: 5, offset: 0}}>
-                            <RandomChar
-                            toggl={toggl}/>
+                            {tog}
                             <Button
                                 color="secondary"
                                 onClick={this.onToggleChar}
-                            >
-                                Toggle random Character</Button>
+                            >Toggle random Character</Button>
                         </Col>
                     </Row>
                     <Row>
