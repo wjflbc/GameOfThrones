@@ -18,6 +18,8 @@ export default class RandomChar extends Component {
         error: false,
     }
 
+
+
     componentDidMount() {
         this.updataChar();
         this.timerId = setInterval(this.updataChar, 1500);
@@ -26,6 +28,8 @@ export default class RandomChar extends Component {
     componentWillUnmount() {
         clearInterval(this.timerId);
     }
+
+
 
     onCharLoaded = (char) => {
         this.setState({
@@ -49,11 +53,8 @@ export default class RandomChar extends Component {
     }
 
     render() {
-        console.log('render');
 
         const {char, loading, error} = this.state;
-        // const {toggl} = this.props
-
 
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinner = loading ? <Spinner/> : null;
@@ -73,7 +74,7 @@ export default class RandomChar extends Component {
 }
 
 const View = ({char}) => {
-    const {name, gender, born, died, culture} = char;
+    const {name , gender, born, died, culture} = char;
 
     return (
         <>

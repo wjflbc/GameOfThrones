@@ -2,22 +2,34 @@ import React, {Component} from 'react';
 import {Col, Row, Container,Button} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import ItemList from '../itemList';
-import CharDetails from '../charDetails';
+import ErrorMessage from "../error";
+import CharacterPage from "../characterPage";
+import ItemList from "../itemList";
+import CharDetails from "../charDetails";
+import gotService from '../../services/gotService';
 
 
 
 
 export default class App extends Component {
+    gotService = new gotService();
+
     constructor(props) {
         super(props);
         this.state = {
-           toggl: true
+             toggl: true,
+             error: false
         }
 
         this.onToggleChar = this.onToggleChar.bind(this);
     }
 
+    componentDidCatch(error, errorInfo) {
+        console.log('error');
+        this.setState({
+            error: true
+        })
+    }
 
 
     onToggleChar () {
@@ -27,9 +39,12 @@ export default class App extends Component {
 
     }
 
-
     render() {
         const tog = this.state.toggl ? <RandomChar/> : null;
+
+        if (this.state.error) {
+            return <ErrorMessage/>
+        }
 
         return (
             <>
@@ -46,12 +61,27 @@ export default class App extends Component {
                             >Toggle random Character</Button>
                         </Col>
                     </Row>
+                    <CharacterPage/>
                     <Row>
                         <Col md='6'>
-                            <ItemList />
+                            <ItemList
+                                onCharSelected={this.onCharSelected}
+                                getData={this.gotService.getAllBooks}/>
                         </Col>
                         <Col md='6'>
-                            <CharDetails />
+                            <CharDetails
+                                charId={this.state.selectedChar}/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md='6'>
+                            <ItemList
+                                onCharSelected={this.onCharSelected}
+                                getData={this.gotService.getAllHouses}/>
+                        </Col>
+                        <Col md='6'>
+                            <CharDetails
+                                charId={this.state.selectedChar}/>
                         </Col>
                     </Row>
                 </Container>
