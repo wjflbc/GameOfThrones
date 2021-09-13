@@ -4,6 +4,8 @@ import Spinner from "../spiner/spiner";
 
 
 
+
+
 export default class ItemList extends Component {
 
 
@@ -24,19 +26,20 @@ export default class ItemList extends Component {
             })
     }
 
+
     renderItems(arr) {
-        return arr.map((item) => {
-            const {id, name} = item
-            return(
-                <li
-                    kye={id}
-                    className="list-group-item"
-                    onClick={ () => this.props.onCharSelected(id)}
+            return arr.map((item) => {
+                const {id, name} = item;
+                return(
+                    <li
+                        key={id}
+                        className="list-group-item"
+                        onClick={ () => this.props.onCharSelected(id)}
                     >
-                    {name}
-                </li>
-            )
-        });
+                        {name}
+                    </li>
+                )
+            });
     }
 
 
