@@ -13,15 +13,14 @@ export default class CharacterPage extends Component {
     gotService = new gotService();
 
     state ={
-        selectedChar: 130,
+        selectedItem: 130,
         error: false
     }
 
     onItemSelected = (id) => {
         this.setState({
-            selectedChar: id
+            selectedItem: id
         })
-        console.log(id);
     }
 
 
@@ -32,6 +31,7 @@ export default class CharacterPage extends Component {
     }
 
     render() {
+
 
         if (this.state.error) {
             return <ErrorMessage/>
@@ -45,7 +45,9 @@ export default class CharacterPage extends Component {
         )
 
         const charDetails = (
-            <CharDetails charId={this.state.selectedChar}>
+            <CharDetails
+                itemId={this.state.selectedItem}
+                getOne={this.gotService.getCharacters}>
                 <Field field='gender' label='Gender' />
                 <Field field='born' label='Born' />
                 <Field field='died' label='Died' />

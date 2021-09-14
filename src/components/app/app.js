@@ -69,7 +69,8 @@ export default class App extends Component {
                         </Col>
                         <Col md='6'>
                             <CharDetails
-                                charId={this.state.selectedChar}/>
+                                itemId={this.state.selectedItem}
+                                getOne={this.gotService.getBook}/>
                         </Col>
                     </Row>
                     <Row>
@@ -81,7 +82,8 @@ export default class App extends Component {
                         </Col>
                         <Col md='6'>
                             <CharDetails
-                                charId={this.state.selectedChar}/>
+                                itemId={this.state.selectedItem}
+                                getOne={this.gotService.getHouse}/>
                         </Col>
                     </Row>
                 </Container>

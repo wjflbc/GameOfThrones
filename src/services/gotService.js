@@ -71,6 +71,7 @@ export default class GotService {
 
 
     _transformCharacter = (char) => {
+        // console.log(char);
         return {
             id: this._extractId(char),
             name: this.isSet(char.name),
@@ -80,6 +81,8 @@ export default class GotService {
             culture: this.isSet(char.culture)
         }
     }
+
+
 
     _transformHouse = (house) => {
         return{

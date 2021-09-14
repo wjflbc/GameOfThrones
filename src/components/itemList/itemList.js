@@ -4,8 +4,6 @@ import Spinner from "../spiner/spiner";
 
 
 
-
-
 export default class ItemList extends Component {
 
 
