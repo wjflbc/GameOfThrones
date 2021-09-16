@@ -13,9 +13,11 @@ export default class GotService {
             throw new Error(`Could not fetch ${url}, status: ${res.status}`);
         }
 
-        return await res.json();
+        let some = await res.json();
 
+        return some;
     };
+
      getAllCharacters = async () => {
          const res = await this.getResource("/characters?page=5&pageSize=10");
         return res.map(this._transformCharacter);
@@ -32,7 +34,7 @@ export default class GotService {
     }
 
      getBook = async (id) =>  {
-        const book = this.getResource(`/books/${id}`);
+        const book = await this.getResource(`/books/${id}`);
         return this._transformBook(book);
     }
 
@@ -42,7 +44,7 @@ export default class GotService {
     }
 
      getHouse = async (id) => {
-        const house =  this.getResource(`/houses/${id}`);
+        const house = await this.getResource(`/houses/${id}`);
         return this._transformHouse(house);
 
     }
@@ -71,7 +73,6 @@ export default class GotService {
 
 
     _transformCharacter = (char) => {
-        // console.log(char);
         return {
             id: this._extractId(char),
             name: this.isSet(char.name),
@@ -85,6 +86,7 @@ export default class GotService {
 
 
     _transformHouse = (house) => {
+        console.log(house);
         return{
             id: this._extractId(house),
             name: this.isSet(house.name),

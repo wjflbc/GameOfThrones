@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import './charDetails.css';
-import Spinner from "../spiner/spiner";
-import ErrorMessage from "../error";
+import './itemDetails.css';
+
 
 
 const Field = ({itemAll, field, label}) => {
-    console.log(itemAll);
     return (
         <li className="list-group-item d-flex justify-content-between">
             <span className="term">{label}</span>
@@ -19,76 +17,47 @@ export {
 }
 
 
-export default class CharDetails extends Component {
+export default class ItemDetails extends Component {
 
     state = {
-        itemAll: null,
-        loading: true,
-        error: false
+        itemAll: null
+
     }
 
     componentDidMount() {
-        this.updateChar();
+        this.updateItem();
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.itemId !== prevProps.itemId) {
-            this.updateChar();
+            this.updateItem();
         }
     }
 
-    onCharDetailsLoaded = (itemAll) => {
-        this.setState({
-            itemAll,
-            loading: false
-        })
-    }
 
-
-    updateChar() {
-        const {itemId} = this.props;
+    updateItem() {
+        const {itemId, getItem} = this.props;
         if (!itemId) {
             return;
         }
 
-        this.setState({
-            loading: true
-        })
-
-        const {getOne} = this.props;
-        getOne(itemId)
-            .then(this.onCharDetailsLoaded)
-            .catch( () => this.onError())
+        getItem(itemId)
+            .then((itemAll) => {
+                this.setState({itemAll})
+            })
     }
 
-    onError(){
-        this.setState({
-            itemAll: null,
-            error: true
-        })
-    }
 
 
     render() {
 
-        if (!this.state.itemAll && this.state.error) {
-            return <ErrorMessage/>
-        } else if (!this.state.itemAll) {
+        if (!this.state.itemAll) {
             return <span className="select-error">Please select a character</span>
         }
 
 
         const {itemAll} = this.state;
         const {name} = itemAll;
-
-
-        if (this.state.loading) {
-            return (
-                <div className="char-details rounded">
-                    <Spinner/>
-                </div>
-            )
-        }
 
 
 
