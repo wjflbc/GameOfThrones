@@ -6,7 +6,6 @@ import gotService from '../../services/gotService';
 import RowBlock from "../rowBlock";
 
 
-
 export default class CharacterPage extends Component {
 
     gotService = new gotService();
