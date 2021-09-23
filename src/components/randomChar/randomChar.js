@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import './randomChar.css';
 import gotService from '../../services/gotService';
 import Spinner from "../spiner/spiner";
@@ -8,72 +8,62 @@ import ErrorMessage from "../error";
 
 
 
-export default class RandomChar extends Component {
+function RandomChar () {
+
+    const [char, setChar] = useState({});
+    const [loading, setLoading] = useState( true);
+    const [error, setError] = useState(false);
+    const [ url , setUrl ] = useState (new gotService());
+
+        useEffect(() => {
+        updataChar()
+       let timerId = setInterval(updataChar, 15000);
+       return () => {
+           clearInterval(timerId)
+       }
+    }, [])
 
 
-    gotService = new gotService();
-    state = {
-        char: {},
-        loading: true,
-        error: false,
+   function onCharLoaded (char)  {
+        setChar(char)
+        setLoading(false)
     }
 
 
 
-    componentDidMount() {
-        this.updataChar();
-        this.timerId = setInterval(this.updataChar, 15000);
+   function onError  (err)  {
+        setError(true)
+       setLoading(false)
     }
 
-    componentWillUnmount() {
-        clearInterval(this.timerId);
-    }
-
-
-
-    onCharLoaded = (char) => {
-        this.setState({
-            char,
-            loading: false
-        })
-    }
-
-    onError = (err) => {
-        this.setState({
-            error: true,
-            loading: false
-        })
-    }
-
-    updataChar = () => {
+   function updataChar ()  {
         const id = Math.floor(Math.random()*140 + 25);
-        this.gotService.getCharacters(id)
-            .then(this.onCharLoaded)
-            .catch(this.onError);
-    }
-
-    render() {
-
-        const {char, loading, error} = this.state;
-
-        const errorMessage = error ? <ErrorMessage/> : null;
-        const spinner = loading ? <Spinner/> : null;
-        const content = !(loading || error) ? <View char={char}/> : null ;
-
-        return (
-            <div className="random-block rounded" >
-                {errorMessage}
-                {spinner}
-                {content}
-            </div>
-
-        );
+        setUrl(
+            url.getCharacters(id)
+                .then(onCharLoaded)
+                .catch(onError)
+        )
+   }
 
 
-    }
+    const errorMessage = error ? <ErrorMessage/> : null;
+    const spinner = loading ? <Spinner/> : null;
+    const content = !(loading || error) ? <View char={char}/> : null ;
+
+
+    return (
+        <div className="random-block rounded" >
+            {errorMessage}
+            {spinner}
+            {content}
+        </div>
+
+    );
+
 }
 
 const View = ({char}) => {
+
     const {name , gender, born, died, culture} = char;
 
     return (
@@ -101,6 +91,4 @@ const View = ({char}) => {
     )
 }
 
-
-
-
+export default RandomChar;

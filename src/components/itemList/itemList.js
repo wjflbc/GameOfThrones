@@ -1,36 +1,49 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './itemList.css';
+import Spinner from '../spiner/spiner';
+
+function ItemList ({getData, renderItem, onItemSelected}) {
+
+    const [itemList, updataList] = useState([]);
+
+    useEffect(() => {
+        getData()
+            .then( (data) => {
+                updataList(data)
+            })
+    }, [])
 
 
- const ItemList = () => {
-
-    const renderItems = (arr) => {
+    function renderItems(arr) {
         return arr.map((item) => {
             const {id} = item;
-            const label = this.props.renderItem(item);
-            console.log(item);
-                return(
-                    <li
-                        key={id}
-                        className="list-group-item"
-                        onClick={ () => this.props.onItemSelected(id)}>
-                        {label}
-                    </li>
-                )
-        });
+
+            const label = renderItem(item);
+
+            return (
+                <li
+                    key={id}
+                    className="list-group-item"
+                    onClick={ () => onItemSelected(id)}>
+                    {label}
+                </li>
+            )
+        })
     }
 
-    const {data}= this.props;
-    const items = renderItems(data);
+        if (!itemList) {
+            return <Spinner/>
+        }
+
+        const items = renderItems(itemList);
 
 
-    return (
-        <ul className="item-list list-group">
-            {items}
-        </ul>
-    );
+        return (
+            <ul className="item-list list-group">
+                {items}
+            </ul>
+        );
+
 }
 
 export default ItemList;
-
-

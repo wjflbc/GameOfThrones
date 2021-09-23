@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {Component} from 'react';
 import './itemDetails.css';
 
 
@@ -17,20 +17,31 @@ export {
 }
 
 
-function ItemDetails ({itemId, getItem, children }) {
+export default class ItemDetails extends Component {
 
-    const [itemAll, updateItAll] = useState([]);
+    state = {
+        itemAll: null
+
+    }
 
 
-    useEffect(() => {
-        if (itemId) {
-            updateItem();
+    componentDidMount() {
+        this.updateItem();
+
+
+
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.itemId !== prevProps.itemId) {
+            this.updateItem();
         }
-    }, [itemId])
+    }
 
 
+    updateItem() {
+        const {itemId, getItem} = this.props;
 
-  function  updateItem() {
 
         if (!itemId) {
             return;
@@ -38,8 +49,7 @@ function ItemDetails ({itemId, getItem, children }) {
 
         getItem(itemId)
             .then((itemAll) => {
-                console.log(itemAll);
-                updateItAll(itemAll)
+                this.setState({itemAll})
 
             })
 
@@ -47,25 +57,33 @@ function ItemDetails ({itemId, getItem, children }) {
     }
 
 
-        if (!itemAll) {
-            return <span className="select-error">Please select a item</span>
+
+
+
+    render() {
+
+        if (!this.state.itemAll) {
+            return <span className="select-error">Please select a character</span>
         }
 
+
+        const {itemAll} = this.state;
         const {name} = itemAll;
+
+
 
         return (
             <div className="char-details rounded">
                 <h4>{name}</h4>
                 <ul className="list-group list-group-flush">
                     {
-                        React.Children.map(children, (child) => {
+                        React.Children.map(this.props.children, (child) => {
                             return React.cloneElement(child, {itemAll})
+
                         })
                     }
                 </ul>
             </div>
         );
-
+    }
 }
-
-export default ItemDetails;

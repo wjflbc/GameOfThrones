@@ -86,7 +86,6 @@ export default class GotService {
 
 
     _transformHouse = (house) => {
-        console.log(house);
         return{
             id: this._extractId(house),
             name: this.isSet(house.name),
